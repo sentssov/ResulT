@@ -26,7 +26,7 @@ public class Result
     public bool IsSuccess { get; }
     public bool IsFailure => !IsSuccess;
     public Error[] Errors { get; }
-
+    
     #region Success
 
     public static Result Success() =>
@@ -60,6 +60,7 @@ public class Result
 public class Result<TValue> : Result
 {
     private readonly TValue? _value;
+    
     protected internal Result(TValue? value, bool isSuccess, Error error)
         : base(isSuccess, error) => _value = value;
     protected internal Result(TValue? value, bool isSuccess, params Error[] errors)
@@ -68,4 +69,6 @@ public class Result<TValue> : Result
     public TValue? Value => _value is not null
         ? _value
         : throw new InvalidOperationException();
+
+    public static implicit operator Result<TValue>(TValue? value) => Create(value);
 }
