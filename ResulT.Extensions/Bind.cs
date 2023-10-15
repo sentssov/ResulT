@@ -73,4 +73,46 @@ public static partial class ResultExtensions
 
         return await result.BindTry(func, expHandler);
     }
+    
+    public static Result<TOut> BindIf<TIn, TOut>(this Result<TIn> result,
+        Func<TIn?, bool> predicate, Func<TIn?, Result<TOut>> func, Error error)
+    {
+        if (result.IsFailure)
+            return Result.Failure<TOut>(result.Errors);
+
+        if (predicate(result.Value))
+            return func(result.Value);
+
+        return Result.Failure<TOut>(error);
+    }
+
+    public static async Task<Result<TOut>> BindIf<TIn, TOut>(this Task<Result<TIn>> resultTask,
+        Func<TIn?, bool> predicate, Func<TIn?, Result<TOut>> func, Error error)
+    {
+        var result = await resultTask
+            .ConfigureAwait(false);
+
+        return result.BindIf(predicate, func, error);
+    }
+
+    public static async Task<Result<TOut>> BindIf<TIn, TOut>(this Result<TIn> result,
+        Func<TIn?, bool> predicate, Func<TIn?, Task<Result<TOut>>> func, Error error)
+    {
+        if (result.IsFailure)
+            return Result.Failure<TOut>(result.Errors);
+
+        if (predicate(result.Value))
+            return await func(result.Value);
+
+        return Result.Failure<TOut>(error);
+    }
+
+    public static async Task<Result<TOut>> BindIf<TIn, TOut>(this Task<Result<TIn>> resultTask,
+        Func<TIn?, bool> predicate, Func<TIn?, Task<Result<TOut>>> func, Error error)
+    {
+        var result = await resultTask
+            .ConfigureAwait(false);
+
+        return await result.BindIf(predicate, func, error);
+    }
 }
