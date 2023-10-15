@@ -33,7 +33,8 @@ public class Result
         new(true, Error.None);
 
     public static Result<TValue> Success<TValue>(TValue? value) =>
-        value is not null ? new Result<TValue>(value, true, Error.None)
+        value is not null 
+            ? new Result<TValue>(value, true, Error.None)
             : Failure<TValue>(Error.NullValue);
 
     #endregion
@@ -45,6 +46,7 @@ public class Result
 
     public static Result Failure(params Error[] errors) =>
         new(false, errors);
+    
     public static Result<TValue> Failure<TValue>(Error error) =>
         new(default, false, error);
 
@@ -55,6 +57,60 @@ public class Result
 
     public static Result<TValue> Create<TValue>(TValue? value) =>
         value is not null ? Success(value) : Failure<TValue>(Error.NullValue);
+
+    public static Result Try(
+        Action action, Func<Exception, Error> expHandler)
+    {
+        try
+        {
+            action();
+            return Success();
+        }
+        catch (Exception exp)
+        {
+            return Failure(expHandler(exp));
+        }
+    }
+
+    public static async Task<Result> Try(
+        Func<Task> func, Func<Exception, Error> expHandler)
+    {
+        try
+        {
+            await func();
+            return Success();
+        }
+        catch (Exception exp)
+        {
+            return Failure(expHandler(exp));
+        }
+    }
+    
+    public static Result<TIn> Try<TIn>(
+        Func<TIn?> func, Func<Exception, Error> expHandler)
+    {
+        try
+        {
+            return Success(func());
+        }
+        catch (Exception exp)
+        {
+            return Failure<TIn>(expHandler(exp));
+        }
+    }
+
+    public static async Task<Result<TIn>> Try<TIn>(
+        Func<Task<TIn?>> func, Func<Exception, Error> expHandler)
+    {
+        try
+        {
+            return Success(await func());
+        }
+        catch (Exception exp)
+        {
+            return Failure<TIn>(expHandler(exp));
+        }
+    }
 }
 
 public class Result<TValue> : Result
