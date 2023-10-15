@@ -11,12 +11,4 @@
       <ProjectReference Include="..\ResulT\ResulT.csproj" />
     </ItemGroup>
     
-    <ItemGroup>
-      <None Include="..\icon.png">
-        <Pack>True</Pack>
-        <PackagePath></PackagePath>
-        <Link>icon.png</Link>
-      </None>
-    </ItemGroup>
-
 </Project>
