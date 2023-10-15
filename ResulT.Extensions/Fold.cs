@@ -18,6 +18,7 @@ public static partial class ResultExtensions
 
         return Result.Success(output);
     }
+    
     public static async Task<Result<TIn>> Fold<TSrc, TIn>(this Task<Result<TSrc>> resultTask,
         TIn seed, Func<TIn, TIn?, TIn> func) where TSrc : IEnumerable<TIn>
     {
@@ -26,6 +27,7 @@ public static partial class ResultExtensions
 
         return result.Fold(seed, func);
     }
+    
     public static async Task<Result<TIn>> Fold<TSrc, TIn>(this Result<TSrc> result,
         TIn seed, Func<TIn, TIn?, Task<TIn>> func) where TSrc : IEnumerable<TIn>
     {
@@ -40,6 +42,7 @@ public static partial class ResultExtensions
 
         return Result.Success(output);
     }
+    
     public static async Task<Result<TIn>> Fold<TSrc, TIn>(this Task<Result<TSrc>> resultTask,
         TIn seed, Func<TIn, TIn?, Task<TIn>> func) where TSrc : IEnumerable<TIn>
     {
@@ -66,6 +69,7 @@ public static partial class ResultExtensions
             return output;
         }, expHandler);
     }
+    
     public static async Task<Result<TIn>> FoldTry<TSrc, TIn>(this Task<Result<TSrc>> resultTask,
         TIn seed, Func<TIn, TIn?, TIn> func, Func<Exception, Error> expHandler)
         where TSrc : IEnumerable<TIn>
@@ -75,6 +79,7 @@ public static partial class ResultExtensions
 
         return result.FoldTry(seed, func, expHandler);
     }
+    
     public static async Task<Result<TIn>> FoldTry<TSrc, TIn>(this Result<TSrc> result,
         TIn seed, Func<TIn, TIn?, Task<TIn>> func, Func<Exception, Error> expHandler)
         where TSrc : IEnumerable<TIn>
@@ -92,6 +97,7 @@ public static partial class ResultExtensions
             return output;
         }, expHandler);
     }
+    
     public static async Task<Result<TIn>> FoldTry<TSrc, TIn>(this Task<Result<TSrc>> resultTask,
         TIn seed, Func<TIn, TIn?, Task<TIn>> func, Func<Exception, Error> expHandler) 
         where TSrc : IEnumerable<TIn>
@@ -114,6 +120,7 @@ public static partial class ResultExtensions
 
         return result.Fold(seed, func);
     }
+    
     public static async Task<Result<TIn>> FoldIf<TSrc, TIn>(this Task<Result<TSrc>> resultTask,
         bool condition, TIn seed, Func<TIn, TIn?, TIn> func, Error error)
         where TSrc : IEnumerable<TIn>
@@ -123,6 +130,7 @@ public static partial class ResultExtensions
 
         return result.FoldIf(condition, seed, func, error);
     }
+    
     public static async Task<Result<TIn>> FoldIf<TSrc, TIn>(this Result<TSrc> result,
         bool condition, TIn seed, Func<TIn, TIn?, Task<TIn>> func, Error error)
         where TSrc : IEnumerable<TIn>
@@ -135,6 +143,7 @@ public static partial class ResultExtensions
 
         return await result.Fold(seed, func);
     }
+    
     public static async Task<Result<TIn>> FoldIf<TSrc, TIn>(this Task<Result<TSrc>> resultTask,
         bool condition, TIn seed, Func<TIn, TIn?, Task<TIn>> func, Error error)
         where TSrc : IEnumerable<TIn>

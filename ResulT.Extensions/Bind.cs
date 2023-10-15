@@ -115,4 +115,34 @@ public static partial class ResultExtensions
 
         return await result.BindIf(predicate, func, error);
     }
+
+    public static Result<TOut> BindIf<TIn, TOut>(this Result<TIn> result,
+        bool condition, Func<TIn?, Result<TOut>> func, Error error)
+    {
+        return result.BindIf(_ => condition, func, error);
+    }
+
+    public static async Task<Result<TOut>> BindIf<TIn, TOut>(this Task<Result<TIn>> resultTask,
+        bool condition, Func<TIn?, Result<TOut>> func, Error error)
+    {
+        var result = await resultTask
+            .ConfigureAwait(false);
+
+        return result.BindIf(_ => condition, func, error);
+    }
+
+    public static async Task<Result<TOut>> BindIf<TIn, TOut>(this Result<TIn> result,
+        bool condition, Func<TIn?, Task<Result<TOut>>> func, Error error)
+    {
+        return await result.BindIf(_ => condition, func, error);
+    }
+
+    public static async Task<Result<TOut>> BindIf<TIn, TOut>(this Task<Result<TIn>> resultTask,
+        bool condition, Func<TIn?, Task<Result<TOut>>> func, Error error)
+    {
+        var result = await resultTask
+            .ConfigureAwait(false);
+
+        return await result.BindIf(_ => condition, func, error);
+    }
 }
