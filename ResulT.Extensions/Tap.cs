@@ -17,7 +17,7 @@ public static partial class ResultExtensions
     {
         var result = await resultTask
             .ConfigureAwait(false);
-        
+   
         return result.Tap(action);
     }
     
