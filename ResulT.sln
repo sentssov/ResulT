@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResulT", "ResulT\ResulT.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResulT.Extensions", "ResulT.Extensions\ResulT.Extensions.csproj", "{C1A2B1C7-69E1-4C08-A8EB-A46764BE4854}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B2BC434A-7988-42AB-A569-0BBABCA55D29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{C1A2B1C7-69E1-4C08-A8EB-A46764BE4854}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1A2B1C7-69E1-4C08-A8EB-A46764BE4854}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1A2B1C7-69E1-4C08-A8EB-A46764BE4854}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C5B484EB-31AA-4AA9-AB59-DC9166CB9FAB} = {B2BC434A-7988-42AB-A569-0BBABCA55D29}
+		{C1A2B1C7-69E1-4C08-A8EB-A46764BE4854} = {B2BC434A-7988-42AB-A569-0BBABCA55D29}
 	EndGlobalSection
 EndGlobal
