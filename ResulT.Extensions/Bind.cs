@@ -37,7 +37,7 @@ public static partial class ResultExtensions
         
         return await result.Bind(func);
     }
-
+    
     public static Result<TOut> BindTry<TIn, TOut>(this Result<TIn> result,
         Func<TIn?, Result<TOut>> func, Func<Exception, Error> expHandler)
     {
