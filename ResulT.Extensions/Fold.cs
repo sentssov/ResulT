@@ -2,6 +2,7 @@ using ResulT.Options;
 
 namespace ResulT.Extensions;
 
+// TODO: Надо реализовать возможность последовательного вызова функций над элементом - Pipe
 public static partial class ResultExtensions
 {
     public static Result<TIn> Fold<TSrc, TIn>(this Result<TSrc> result,
