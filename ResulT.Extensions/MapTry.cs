@@ -5,34 +5,33 @@ namespace ResulT.Extensions;
 public static partial class ResultExtensions
 {
     public static Result<TOut> MapTry<TIn, TOut>(this Result<TIn> result,
-        Func<TIn?, TOut> func, Func<Exception, Error> expHandler)
+        Func<TIn?, TOut> func, Func<Exception, Error> handler)
     {
-        if (result.IsFailure)
-            return Result.Failure<TOut>(result.Errors);
-        return Result.Try(() => func(result.Value), expHandler);
+        return Result.Try(() => result.Map(func), handler);
     }
     
     public static async Task<Result<TOut>> MapTry<TIn, TOut>(this Task<Result<TIn>> resultTask,
-        Func<TIn?, TOut> func, Func<Exception, Error> expHandler)
+        Func<TIn?, TOut> func, Func<Exception, Error> handler)
     {
         var result = await resultTask
             .ConfigureAwait(false);
-        return result.MapTry(func, expHandler);
+        
+        return result.MapTry(func, handler);
     }
     
     public static async Task<Result<TOut>> MapTry<TIn, TOut>(this Result<TIn> result,
-        Func<TIn?, Task<TOut>> func, Func<Exception, Error> expHandler)
+        Func<TIn?, Task<TOut>> func, Func<Exception, Error> handler)
     {
-        if (result.IsFailure)
-            return Result.Failure<TOut>(result.Errors);
-        return await Result.Try(async () => await func(result.Value), expHandler);
+        
+        return await Result.Try(() => result.Map(func), handler);
     }
     
     public static async Task<Result<TOut>> MapTry<TIn, TOut>(this Task<Result<TIn>> resultTask,
-        Func<TIn?, Task<TOut>> func, Func<Exception, Error> expHandler)
+        Func<TIn?, Task<TOut>> func, Func<Exception, Error> handler)
     {
         var result = await resultTask
             .ConfigureAwait(false);
-        return await result.MapTry(func, expHandler);
+        
+        return await result.MapTry(func, handler);
     }
 }

@@ -60,8 +60,34 @@ public class Result
 
     #region Try
 
-    public static Result Try(
-        Action action, Func<Exception, Error> expHandler)
+    public static Result<TOut> Try<TOut>(Func<Result<TOut>> func,
+        Func<Exception, Error> handler)
+    {
+        try
+        {
+            return func();
+        }
+        catch (Exception exp)
+        {
+            return Failure<TOut>(handler(exp));
+        }
+    }
+
+    public static async Task<Result<TOut>> Try<TOut>(Func<Task<Result<TOut>>> func,
+        Func<Exception, Error> handler)
+    {
+        try
+        {
+            return await func();
+        }
+        catch (Exception exp)
+        {
+            return Failure<TOut>(handler(exp));
+        }
+    }
+    
+    public static Result Try(Action action, 
+        Func<Exception, Error> expHandler)
     {
         try
         {
@@ -74,8 +100,8 @@ public class Result
         }
     }
 
-    public static async Task<Result> Try(
-        Func<Task> func, Func<Exception, Error> expHandler)
+    public static async Task<Result> Try(Func<Task> func, 
+        Func<Exception, Error> expHandler)
     {
         try
         {
@@ -88,12 +114,12 @@ public class Result
         }
     }
     
-    public static Result<TOut> Try<TOut>(
-        Func<TOut?> func, Func<Exception, Error> expHandler)
+    public static Result<TOut> Try<TOut>(Func<TOut?> func, 
+        Func<Exception, Error> expHandler)
     {
         try
         {
-            return Success(func());
+            return Create(func());
         }
         catch (Exception exp)
         {
@@ -101,12 +127,12 @@ public class Result
         }
     }
 
-    public static async Task<Result<TOut>> Try<TOut>(
-        Func<Task<TOut?>> func, Func<Exception, Error> expHandler)
+    public static async Task<Result<TOut>> Try<TOut>(Func<Task<TOut?>> func, 
+        Func<Exception, Error> expHandler)
     {
         try
         {
-            return Success(await func());
+            return Create(await func());
         }
         catch (Exception exp)
         {
@@ -114,102 +140,6 @@ public class Result
         }
     }
 
-    #endregion
-
-    #region If
-
-    public static Result If(bool condition, 
-        Action action, Error error)
-    {
-        if (condition)
-        {
-            action();
-            return Success();
-        }
-        return Failure(error);
-    }
-
-    public static async Task<Result> If(bool condition,
-        Func<Task> func, Error error)
-    {
-        if (condition)
-        {
-            await func();
-            return Success();
-        }
-
-        return Failure(error);
-    }
-
-    public static Result<TOut> If<TOut>(bool condition,
-        Func<TOut> func, Error error)
-    {
-        if (condition)
-            return Success(func());
-        return Failure<TOut>(error);
-    }
-
-    public static async Task<Result<TOut>> If<TOut>(bool condition,
-        Func<Task<TOut>> func, Error error)
-    {
-        if (condition)
-            return Success(await func());
-        return Failure<TOut>(error);
-    }
-
-    public static Result If(Func<bool> predicate,
-        Action action, Error error)
-    {
-        return If(predicate(), action, error);
-    }
-
-    public static async Task<Result> If(Func<Task<bool>> predicate,
-        Action action, Error error)
-    {
-        return If(await predicate(), action, error);
-    }
-
-    public static async Task<Result> If(Func<bool> predicate,
-        Func<Task> func, Error error)
-    {
-        return await If(predicate(), func, error);
-    }
-
-    public static async Task<Result> If(Func<Task<bool>> predicate,
-        Func<Task> func, Error error)
-    {
-        return await If(await predicate(), func, error);
-    }
-
-    public static Result<TOut> If<TOut>(Func<bool> predicate,
-        Func<TOut> func, Error error)
-    {
-        return If(predicate(), func, error);
-    }
-
-    public static async Task<Result<TOut>> If<TOut>(Func<Task<bool>> predicate,
-        Func<TOut> func, Error error)
-    {
-        return If(await predicate(), func, error);
-    }
-
-    public static async Task<Result<TOut>> If<TOut>(Func<bool> predicate,
-        Func<Task<TOut>> func, Error error)
-    {
-        return await If(predicate(), func, error);
-    }
-
-    public static async Task<Result<TOut>> If<TOut>(Func<Task<bool>> predicate,
-        Func<Task<TOut>> func, Error error)
-    {
-        return await If(await predicate(), func, error);
-    }
-    
-    /*
-     *   0 -> 0
-     * a
-     */
-    
     #endregion
 }
 
