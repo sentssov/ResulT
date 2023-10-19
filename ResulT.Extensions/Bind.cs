@@ -20,7 +20,7 @@ public static partial class ResultExtensions
 
         return result.Bind(func);
     }
-
+    
     public static async Task<Result<TOut>> Bind<TOut>(this Result result,
         Func<Task<Result<TOut>>> func)
     {
