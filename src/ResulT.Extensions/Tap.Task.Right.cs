@@ -4,23 +4,23 @@ namespace ResulT.Extensions;
 
 public static partial class ResultExtensions
 {
-    public static Result Tap(this Result result, 
-        Action action)
+    public static async Task<Result> Tap(this Result result,
+        Func<Task> func)
     {
         if (result.IsFailure)
             return result;
 
-        action();
+        await func();
         return result;
     }
     
-    public static Result<TIn> Tap<TIn>(this Result<TIn> result,
-        Action<TIn?> action)
+    public static async Task<Result<TIn>> Tap<TIn>(this Result<TIn> result,
+        Func<TIn?, Task> func)
     {
         if (result.IsFailure)
             return result;
-
-        action(result.Value);
+        
+        await func(result.Value);
         return result;
     }
 }
